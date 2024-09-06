@@ -8,7 +8,10 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o /app/my_app .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/my_app .
+
+# Проверка существования исполняемого файла
+RUN ls -l /app/my_app
 
 FROM scratch
 
