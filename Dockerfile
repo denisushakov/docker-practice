@@ -17,6 +17,8 @@ FROM scratch
 
 COPY --from=build /app/my_app /app/my_app
 
+COPY tracker.db /app/tracker.db
+
 EXPOSE 8080
 
 CMD ["/app/my_app"]
