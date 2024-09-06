@@ -10,11 +10,14 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/my_app .
 
-# Проверка существования исполняемого файла
-RUN ls -l /app/my_app
-
 FROM alpine:latest
 
+WORKDIR /app
+
+# Копируем скомпилированное приложение из этапа сборки
+COPY --from=build /app/my_app /app/my_app
+
+# Копируем базу данных
 COPY tracker.db /app/tracker.db
 
 EXPOSE 8080
