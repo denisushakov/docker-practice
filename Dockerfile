@@ -1,4 +1,4 @@
-FROM golang:1.22-alpine AS build
+FROM golang:1.22 AS build
 
 WORKDIR /app
 
@@ -10,15 +10,12 @@ COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /app/my_app .
 
-FROM alpine:latest
+FROM scratch
 
 WORKDIR /app
 
 # Копируем скомпилированное приложение из этапа сборки
 COPY --from=build /app/my_app /app/my_app
-
-# Копируем базу данных
-COPY tracker.db /app/tracker.db
 
 EXPOSE 8080
 
